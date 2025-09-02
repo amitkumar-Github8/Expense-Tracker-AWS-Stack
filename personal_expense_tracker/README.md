@@ -1,36 +1,70 @@
-# Expense Tracker Pro (Flask, AWS-ready)
+# Personal Expense Tracker (Flask)
 
-A full-featured Flask web application for tracking personal expenses, managing budgets, and viewing analytics. The app is structured for local development and can be deployed on AWS (EC2 for hosting, RDS for DB, CloudWatch for logs/metrics, and SNS for alerts).
+A simple, clean Flask app to track spending, organize categories, and view a basic dashboard. Uses SQLite by default and works with Postgres/MySQL via `DATABASE_URL`.
 
 ## Features
-- User authentication (login/register)
-- Expense and category management
-- Dashboard and simple reports (Chart.js)
-- SQLAlchemy models and Flask-Migrate
-- Bootstrap 5 UI with a clean, professional design
+- Login / Register (Flask-Login)
+- Add expenses with amount, date, description, and category
+- Manage categories
+- Dashboard + simple reports (Chart.js)
+- SQLAlchemy ORM + Flask-Migrate
+- Bootstrap 5 UI
 
-## Quick Start
+## Prerequisites
+- Python 3.10+
 
-1) Create a virtual environment and install dependencies
+## Setup (Windows)
+From the `personal_expense_tracker` folder:
 
+1) Create and activate a virtual environment
+
+Git Bash:
 ```bash
 python -m venv .venv
 source .venv/Scripts/activate
+```
+
+PowerShell:
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+2) Install dependencies
+```bash
 pip install -r requirements.txt
 ```
 
-2) Optional: set env vars (see `.env.example`)
+3) (Optional) Configure environment
+- Copy `.env.example` to `.env`
+- Set values like:
+	- `SECRET_KEY` (any random string)
+	- `DATABASE_URL` (defaults to `sqlite:///expense.db`)
 
-3) Initialize the database (auto-creates in dev when running)
-
+## Run locally
 ```bash
 python run.py
 ```
+Open http://127.0.0.1:5000
 
-Visit http://127.0.0.1:5000
+On first run, SQLite tables are created automatically in development.
 
-## Database migrations
+## Database migrations (optional)
+If you later change models and want Alembic migrations:
 
+Set the Flask app (only for CLI commands):
+
+Git Bash:
+```bash
+export FLASK_APP='app:create_app'
+```
+
+PowerShell:
+```powershell
+$env:FLASK_APP = 'app:create_app'
+```
+
+Then run:
 ```bash
 flask db init
 flask db migrate -m "init"
@@ -38,16 +72,24 @@ flask db upgrade
 ```
 
 ## Tests
-
 ```bash
 pytest -q
 ```
 
-## Deploying to AWS (outline)
-- Use RDS PostgreSQL/MySQL and set `DATABASE_URL`.
-- Run behind Gunicorn/Nginx on EC2/Elastic Beanstalk or containers.
-- Configure environment variables (SECRET_KEY, DATABASE_URL, etc.).
-- Optionally serve static files via S3/CloudFront.
+## Project structure (short)
+```
+personal_expense_tracker/
+	app/               # Flask app (views, models, forms, templates, static)
+	config/            # Config loaded by app factory
+	migrations/        # Alembic (created after init)
+	run.py             # Local dev entry point
+	requirements.txt   # Python deps
+```
+
+## Deploy (high level)
+- Use a production DB (e.g., RDS) and set `DATABASE_URL`
+- Run behind a WSGI server (e.g., gunicorn) with `debug=False`
+- Configure env vars securely (SECRET_KEY, DATABASE_URL)
 
 ---
-This repo is a solid foundation—extend with richer reports, validations, and role-based permissions as needed.
+Tip: In VS Code, you can use the “Install dependencies” task in `.vscode/tasks.json` to set up the environment.
