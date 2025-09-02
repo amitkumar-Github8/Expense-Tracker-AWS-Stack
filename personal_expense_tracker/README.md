@@ -86,10 +86,6 @@ personal_expense_tracker/
 	requirements.txt   # Python deps
 ```
 
-## Deploy (high level)
-- Use a production DB (e.g., RDS) and set `DATABASE_URL`
-- Run behind a WSGI server (e.g., gunicorn) with `debug=False`
-- Configure env vars securely (SECRET_KEY, DATABASE_URL)
 
 ---
 Tip: In VS Code, you can use the “Install dependencies” task in `.vscode/tasks.json` to set up the environment.
