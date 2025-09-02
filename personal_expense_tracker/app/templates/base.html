@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Personal Expense Tracker{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('main.index') }}">ExpenseTracker <strong>Pro</strong></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav me-auto">
+            {% if current_user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link {% if request.endpoint=='main.dashboard' %}active{% endif %}" href="{{ url_for('main.dashboard') }}"><i class="bi bi-house-door me-1"></i> Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link {% if request.blueprint=='expenses' %}active{% endif %}" href="{{ url_for('expenses.list_create') }}"><i class="bi bi-receipt me-1"></i> Expenses</a></li>
+            <li class="nav-item"><a class="nav-link {% if request.blueprint=='categories' %}active{% endif %}" href="{{ url_for('categories.list_create') }}"><i class="bi bi-tags me-1"></i> Categories</a></li>
+            <li class="nav-item"><a class="nav-link {% if request.blueprint=='reports' %}active{% endif %}" href="{{ url_for('reports.overview') }}"><i class="bi bi-graph-up me-1"></i> Reports</a></li>
+            {% endif %}
+          </ul>
+          <ul class="navbar-nav">
+            {% if current_user.is_authenticated %}
+              <li class="nav-item d-none d-lg-flex align-items-center"><span class="navbar-text me-3 text-muted">Hi, {{ current_user.username }}</span></li>
+              <li class="nav-item"><a class="nav-link" href="#" title="Settings"><i class="bi bi-gear"></i><span class="d-lg-none ms-1">Settings</span></a></li>
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}" title="Logout"><i class="bi bi-box-arrow-right"></i><span class="d-lg-none ms-1">Logout</span></a></li>
+            {% else %}
+              <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="page-container">
+    <main class="container page-content">
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </main>
+    <footer class="page-footer">
+      <div class="container footer-inner d-flex justify-content-between align-items-center">
+        <span class="text-muted-600">© {{  now().year if false else '' }} ExpenseTracker</span>
+        <span class="text-muted-600">Built with Flask & Bootstrap</span>
+      </div>
+    </footer>
+    </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+  </html>

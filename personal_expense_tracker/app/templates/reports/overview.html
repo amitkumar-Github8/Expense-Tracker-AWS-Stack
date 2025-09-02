@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Reports{% endblock %}
+{% block content %}
+<div class="row content-header">
+	<div class="col-12 d-flex justify-content-between align-items-center">
+		<h2 class="mb-0">Reports</h2>
+	</div>
+</div>
+<div class="row g-3">
+	<div class="col-lg-8">
+		<div class="card elevated">
+			<div class="card-body">
+				<div class="d-flex justify-content-between align-items-center mb-2">
+					<h5 class="card-title mb-0">Spending by Category</h5>
+				</div>
+				<canvas id="chartCategory" height="120" aria-label="Spending by Category" role="img"></canvas>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title">Key Metrics</h5>
+				<div class="d-flex align-items-center mb-2"><i class="bi bi-cash-coin text-primary me-2"></i> Total amount: <strong class="ms-1">{{ total|currency }}</strong></div>
+				<div class="d-flex align-items-center"><i class="bi bi-receipt text-success me-2"></i> Total expenses: <strong class="ms-1">{{ count }}</strong></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+<script>
+	// Placeholder chart (empty dataset). In future, fill with server-provided labels/data.
+	const ctx = document.getElementById('chartCategory');
+	if (ctx) {
+		new Chart(ctx, {
+			type: 'doughnut',
+			data: { labels: ['No Data'], datasets: [{ data: [1], backgroundColor: ['#e5e7eb'] }] },
+			options: { plugins: { legend: { position: 'bottom' } } }
+		});
+	}
+</script>
+{% endblock %}

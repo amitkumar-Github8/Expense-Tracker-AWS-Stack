@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="hero p-4 p-md-5 mb-4 animate-in">
+  <div class="container">
+  <h1 class="display-6 fw-bold mb-2">Welcome to Your <span class="text-primary">Financial Dashboard</span></h1>
+  <p class="text-muted-600 mb-0">Track your expenses, manage your budget, and take control of your financial future.</p>
+  </div>
+</section>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-4">
+    <div class="card elevated hover-lift">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3 text-primary"><i class="bi bi-wallet2" style="font-size: 2rem;"></i></div>
+        <div>
+          <div class="text-muted-600">Total Spent</div>
+          <div class="h3 mb-0">{{ total_spent|currency }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card hover-lift">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3 text-success"><i class="bi bi-graph-up" style="font-size: 2rem;"></i></div>
+        <div>
+          <div class="text-muted-600">Monthly Budget</div>
+          <div class="h3 mb-0">{{ (total_spent or 0)|currency }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card hover-lift">
+      <div class="card-body d-flex align-items-center">
+        <div class="me-3 text-warning"><i class="bi bi-check2-circle" style="font-size: 2rem;"></i></div>
+        <div>
+          <div class="text-muted-600">Budgets</div>
+          <div class="h3 mb-0">Setup</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="card-title mb-0">Recent Expenses</h5>
+          <a href="{{ url_for('expenses.list_create') }}" class="btn btn-sm btn-primary">View All</a>
+        </div>
+        <p class="text-muted-600 mb-2">A quick look at your latest transactions</p>
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr><th>Date</th><th>Description</th><th>Category</th><th class="text-end">Amount</th></tr>
+            </thead>
+            <tbody>
+              {# Placeholder preview; for real preview, query top N expenses in the route #}
+              <tr><td colspan="4" class="text-muted text-center">Add expenses to see them here.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Quick Actions</h5>
+        <a class="btn btn-primary w-100 mb-2" href="{{ url_for('expenses.list_create') }}"><i class="bi bi-plus-circle me-1"></i> Add Expense</a>
+        <a class="btn btn-outline-secondary w-100" href="{{ url_for('categories.list_create') }}"><i class="bi bi-folder-plus me-1"></i> New Category</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
